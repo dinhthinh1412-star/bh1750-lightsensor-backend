@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Query
 from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 import mysql.connector
 from mysql.connector import pooling
 from datetime import datetime, timedelta
@@ -13,7 +14,14 @@ import os
 
 app = FastAPI()
 
-# Trỏ Jinja2 vào thư mục "web" chứa file index.html
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[https://dinhthinh1412-star.github.io/bh1750-lightsensor/],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 templates = Jinja2Templates(directory="web")
 
 db_pool = pooling.MySQLConnectionPool(
