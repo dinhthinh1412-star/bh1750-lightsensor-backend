@@ -38,7 +38,11 @@ db_pool = pooling.MySQLConnectionPool(
 )
 
 def get_db_connection():
-    return db_pool.get_connection()
+    conn = db_pool.get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SET time_zone = '+07:00'")
+    cursor.close()
+    return conn
 
 
 @app.post("/data")
