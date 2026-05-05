@@ -16,7 +16,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[https://dinhthinh1412-star.github.io/bh1750-lightsensor/],  
+    allow_origins=[
+        "https://dinhthinh1412-star.github.io"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
