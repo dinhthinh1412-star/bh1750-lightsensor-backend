@@ -244,8 +244,12 @@ async def suggest_dates(
                     except ValueError:
                         return JSONResponse({"results": [], "message": "Ngày không hợp lệ!"})
 
-        results = [r[0].strftime("%d/%m/%Y") for r in rows if r[0]]
-        random.shuffle(results)
+        # Lấy danh sách ngày thực tế, sắp xếp giảm dần (mới nhất lên đầu)
+        raw_dates = [r[0] for r in rows if r[0]]
+        raw_dates.sort(reverse=True)
+        
+        # Format lại thành chuỗi DD/MM/YYYY
+        results = [d.strftime("%d/%m/%Y") for d in raw_dates]
         
         return JSONResponse({"results": results[:5], "message": message})
 
@@ -348,8 +352,12 @@ async def suggest_times(
             minutes, seconds = divmod(remainder, 60)
             return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-        times = [format_timedelta(r[0]) for r in rows if r[0] is not None]
-        random.shuffle(times)
+        # Lấy danh sách giờ (timedelta), sắp xếp giảm dần (mới nhất lên đầu)
+        raw_times = [r[0] for r in rows if r[0] is not None]
+        raw_times.sort(reverse=True)
+        
+        # Format lại thành chuỗi HH:MM:SS
+        times = [format_timedelta(td) for td in raw_times]
         
         return JSONResponse({"results": times[:5], "message": message})
 
